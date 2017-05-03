@@ -15,7 +15,7 @@ class Note {
     var photo: UIImage?
     
     init?(title: String, note: String, photo: UIImage?) {
-        // Initialization should file if there is no name or if the rating is negative.
+        // Initialization should fail if there is no title or no note body
         if title.isEmpty || note.isEmpty {
             return nil
         }

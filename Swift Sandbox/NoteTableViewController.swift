@@ -8,8 +8,20 @@
 
 import UIKit
 import os.log
+import RealmSwift
+
+class RealmNote: Object {
+    dynamic var title = ""
+    dynamic var note = ""
+//    dynamic var photo: UIImage?
+    
+}
 
 class NoteTableViewController: UITableViewController {
+    
+    let myNote = RealmNote()
+    
+    let realm = try! Realm()
     
     // This code declares a property and initializes it with a default value (an empty array of Note objects)
     var notes = [Note]()
@@ -133,20 +145,38 @@ class NoteTableViewController: UITableViewController {
                 let newIndexPath = IndexPath(row: notes.count, section: 0)
                 notes.append(note)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
+                
+                
+                // Insert into Realm here
+                myNote.title = note.title
+                myNote.note = note.note
+//                myNote.photo = note.photo
+                realm.beginWrite()
+                realm.add(myNote)
+                try! realm.commitWrite()
             }
             
         }
     }
     
     private func loadSampleNotes() {
-        let photo1 = UIImage(named: "note01")
-        guard let note1 = Note(title: "Favorite Meal", note: "I really love tomatoes. If I could only ever eat tomatoes, that would be fine with me. I think I'll have a bowl of tomatoes for lunch.", photo: photo1) else {
-            fatalError("Unable to instantiate note1")
+//        let photo1 = UIImage(named: "note01")
+//        guard let note1 = Note(title: "Favorite Meal", note: "I really love tomatoes. If I could only ever eat tomatoes, that would be fine with me. I think I'll have a bowl of tomatoes for lunch.", photo: photo1) else {
+//            fatalError("Unable to instantiate note1")
+//        }
+//        guard let note2 = Note(title: "Can't stop thinking about tomatoes.", note: "Tomatoes are SO good! I really love tomatoes. If I could only ever eat tomatoes, that would be fine with me. I think I'll have a bowl of tomatoes for lunch.", photo: photo1) else {
+//            fatalError("Unable to instantiate note2")
+//        }
+//        notes += [note1, note2]
+        // Replace this method with Realm DB
+        let results = realm.objects(RealmNote.self)
+        for result in results {
+            print(result.title)
+            guard let note = Note(title: result.title, note: result.note, photo: nil) else {
+                fatalError("Can't create note from Realm")
+            }
+            notes += [note]
         }
-        guard let note2 = Note(title: "Can't stop thinking about tomatoes.", note: "Tomatoes are SO good! I really love tomatoes. If I could only ever eat tomatoes, that would be fine with me. I think I'll have a bowl of tomatoes for lunch.", photo: photo1) else {
-            fatalError("Unable to instantiate note2")
-        }
-        notes += [note1, note2]
     }
 
 }
