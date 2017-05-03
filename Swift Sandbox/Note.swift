@@ -10,19 +10,23 @@ import UIKit
 
 class Note {
     
+    var id: Int
     var title: String
     var note: String
     var photo: UIImage?
+    var photoUrl: String
     
-    init?(title: String, note: String, photo: UIImage?) {
+    init?(id: Int, title: String, note: String, photo: UIImage?, photoUrl: String) {
         // Initialization should fail if there is no title or no note body
         if title.isEmpty || note.isEmpty {
             return nil
         }
         // Initialize stored properties
+        self.id = id
         self.title = title
         self.note = note
         self.photo = photo
+        self.photoUrl = photoUrl
     }
     
 }

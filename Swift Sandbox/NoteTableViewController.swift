@@ -11,9 +11,10 @@ import os.log
 import RealmSwift
 
 class RealmNote: Object {
+    dynamic var id = 0
     dynamic var title = ""
     dynamic var note = ""
-//    dynamic var photo: UIImage?
+    dynamic var photoUrl = ""
     
 }
 
@@ -33,7 +34,7 @@ class NoteTableViewController: UITableViewController {
         
         super.viewDidLoad()
 
-        loadSampleNotes()
+        loadStoredNotes()
     }
 
     override func didReceiveMemoryWarning() {
@@ -140,17 +141,26 @@ class NoteTableViewController: UITableViewController {
                 // Update an existing note
                 notes[selectedIndexPath.row] = note
                 tableView.reloadRows(at: [selectedIndexPath], with: .none)
+                
+                // Update note in Realm
+                let selectedNote = realm.objects(RealmNote.self).filter("id == \(note.id)").first
+                print(selectedNote)
+                try! realm.write {
+                    selectedNote!.title = note.title
+                    selectedNote!.note = note.note
+                    selectedNote!.photoUrl = note.photoUrl
+                }
+                
             } else {
                 // Add a new note
                 let newIndexPath = IndexPath(row: notes.count, section: 0)
                 notes.append(note)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
                 
-                
                 // Insert into Realm here
                 myNote.title = note.title
                 myNote.note = note.note
-//                myNote.photo = note.photo
+                myNote.photoUrl = note.photoUrl
                 realm.beginWrite()
                 realm.add(myNote)
                 try! realm.commitWrite()
@@ -159,23 +169,31 @@ class NoteTableViewController: UITableViewController {
         }
     }
     
-    private func loadSampleNotes() {
-//        let photo1 = UIImage(named: "note01")
-//        guard let note1 = Note(title: "Favorite Meal", note: "I really love tomatoes. If I could only ever eat tomatoes, that would be fine with me. I think I'll have a bowl of tomatoes for lunch.", photo: photo1) else {
-//            fatalError("Unable to instantiate note1")
-//        }
-//        guard let note2 = Note(title: "Can't stop thinking about tomatoes.", note: "Tomatoes are SO good! I really love tomatoes. If I could only ever eat tomatoes, that would be fine with me. I think I'll have a bowl of tomatoes for lunch.", photo: photo1) else {
-//            fatalError("Unable to instantiate note2")
-//        }
-//        notes += [note1, note2]
-        // Replace this method with Realm DB
+    private func loadStoredNotes() {
+
         let results = realm.objects(RealmNote.self)
         for result in results {
-            print(result.title)
-            guard let note = Note(title: result.title, note: result.note, photo: nil) else {
-                fatalError("Can't create note from Realm")
+            
+            let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+            let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
+            let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+            if let dirPath          = paths.first
+            {
+                let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent(result.photoUrl)
+                let image    = UIImage(contentsOfFile: imageURL.path)
+                // Do whatever you want with the image
+                guard let note = Note(
+                    id: result.id,
+                    title: result.title,
+                    note: result.note,
+                    photo: image,
+                    photoUrl: result.photoUrl
+                    ) else {
+                        fatalError("Can't create note from Realm")
+                }
+                notes += [note]
             }
-            notes += [note]
+            
         }
     }
 

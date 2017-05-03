@@ -17,6 +17,8 @@ class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     @IBOutlet weak var photoImageView: UIImageView!
     
     var note: Note?
+    var id: Int?
+    var photoUrl: String?
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
@@ -28,10 +30,14 @@ class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         
         // Set up views if editing an existing Note.
         if let note = note {
+            
             navigationItem.title = note.title
             titleTextField.text = note.title
             noteTextField.text = note.note
             photoImageView.image = note.photo
+            
+            id = note.id
+            photoUrl = note.photoUrl
         }
         
         updateSaveButtonState()
@@ -48,7 +54,7 @@ class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         let photo = photoImageView.image
         
         // Set the note to be passed to NoteTableViewController after the unwind segue
-        note = Note(title: title, note: noteText, photo: photo)
+        note = Note(id: id!, title: title, note: noteText, photo: photo, photoUrl: photoUrl!)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -99,8 +105,34 @@ class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
                 fatalError("Expecetd a dictionary containing an image, but was provided the following: \(info)")
         }
         
+        // Store image in Documents
+        let documentsDirectoryURL = try! FileManager().url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        // create a name for your image
+        let timestamp = Date().timeIntervalSince1970
+        id = id ?? Int(timestamp)
+        var fileName = String(timestamp)
+        if let i = fileName.characters.index(of: ".") {
+            fileName.remove(at: i)
+            fileName += ".png"
+        }
+        let fileURL = documentsDirectoryURL.appendingPathComponent(fileName)
+        
+        
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                try UIImagePNGRepresentation(selectedImage)!.write(to: fileURL)
+                print("Image Added Successfully")
+            } catch {
+                print(error)
+            }
+        } else {
+            print("Image Not Added")
+        }
+        
+        
         // Set photoImageView to display the selected image.
         photoImageView.image = selectedImage
+        photoUrl = fileName
         
         // Dismiss the picker.
         dismiss(animated: true, completion: nil)
