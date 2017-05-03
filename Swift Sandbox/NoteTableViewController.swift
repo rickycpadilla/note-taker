@@ -20,7 +20,7 @@ class RealmNote: Object {
 
 class NoteTableViewController: UITableViewController {
     
-    let myNote = RealmNote()
+    
     
     let realm = try! Realm()
     
@@ -144,7 +144,6 @@ class NoteTableViewController: UITableViewController {
                 
                 // Update note in Realm
                 let selectedNote = realm.objects(RealmNote.self).filter("id == \(note.id)").first
-                print(selectedNote)
                 try! realm.write {
                     selectedNote!.title = note.title
                     selectedNote!.note = note.note
@@ -157,13 +156,18 @@ class NoteTableViewController: UITableViewController {
                 notes.append(note)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
                 
+                print("Adding a note", note.id)
+                
                 // Insert into Realm here
+                let myNote = RealmNote()
+                myNote.id = note.id
                 myNote.title = note.title
                 myNote.note = note.note
                 myNote.photoUrl = note.photoUrl
                 realm.beginWrite()
                 realm.add(myNote)
                 try! realm.commitWrite()
+                
             }
             
         }
@@ -191,6 +195,7 @@ class NoteTableViewController: UITableViewController {
                     ) else {
                         fatalError("Can't create note from Realm")
                 }
+                print("note id", result.id)
                 notes += [note]
             }
             
