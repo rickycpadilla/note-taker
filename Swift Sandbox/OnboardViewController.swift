@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyOnboard
+import Photos
 
 class OnboardViewController: UIViewController {
     
@@ -19,12 +20,12 @@ class OnboardViewController: UIViewController {
     ]
     var titleArray: [String] = [
         "Welcome to Note Taker!",
-        "Take notes on your phone. Revolutionary!",
+        "Add a photo to a note.",
         "Go ahead and start."
     ]
     var subTitleArray: [String] = [
         "The place to take notes that is like no other place to take notes.",
-        "Pen and paper is so last century. Use your phone to take notes instead.",
+        "Press continue and then YES to use photos in this app.",
         "What are you waiting for?"
     ]
     
@@ -45,6 +46,9 @@ class OnboardViewController: UIViewController {
         view.addSubview(swiftyOnboard)
         swiftyOnboard.dataSource = self
         swiftyOnboard.delegate = self
+        
+        
+        
     }
     
     func gradient() {
@@ -59,7 +63,10 @@ class OnboardViewController: UIViewController {
     
     func handleContinue(sender: UIButton) {
         let index = sender.tag
-        if index == 2 {
+        if index == 1 {
+            self.handlePhotoPermissions(index: index)
+            
+        } else if index == 2 {
             performSegue(withIdentifier: "onboardSegue", sender: nil)
         } else {
             swiftyOnboard?.goToPage(index: index + 1, animated: true)
@@ -67,9 +74,15 @@ class OnboardViewController: UIViewController {
         
     }
     
-    func handleBegin(sender: UIButton) {
-        performSegue(withIdentifier: "onboardSegue", sender: nil)
+    func handlePhotoPermissions(index: Int) {
+        let photos = PHPhotoLibrary.authorizationStatus()
+        if photos == .notDetermined {
+            PHPhotoLibrary.requestAuthorization({status in
+                self.swiftyOnboard?.goToPage(index: index + 1, animated: true)
+            })
+        }
     }
+    
 }
 
 extension OnboardViewController: SwiftyOnboardDelegate, SwiftyOnboardDataSource {

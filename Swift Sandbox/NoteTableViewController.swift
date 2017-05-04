@@ -167,7 +167,6 @@ class NoteTableViewController: UITableViewController {
                 note.note = result.note
                 note.photo = image
                 note.photoUrl = result.photoUrl
-                print("note id", result.id)
                 notes += [note]
             }
             

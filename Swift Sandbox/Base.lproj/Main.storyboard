@@ -13,7 +13,7 @@
         <!--Onboard View Controller-->
         <scene sceneID="Lji-IW-NrQ">
             <objects>
-                <viewController id="XVN-qa-ALp" customClass="OnboardViewController" customModule="Swift_Sandbox" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="OnboardVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XVN-qa-ALp" customClass="OnboardViewController" customModule="Swift_Sandbox" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RUh-2T-4be"/>
                         <viewControllerLayoutGuide type="bottom" id="XRg-ie-5Wq"/>
@@ -176,7 +176,7 @@
         <!--Navigation Controller-->
         <scene sceneID="eEg-eG-wwz">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="EdG-nb-eCa" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavVC" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="EdG-nb-eCa" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="E3Q-DG-N3O">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -214,6 +214,6 @@
         <image name="defaultPhoto" width="540" height="540"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="M1k-Zv-NgY"/>
+        <segue reference="qdd-Ry-RID"/>
     </inferredMetricsTieBreakers>
 </document>
