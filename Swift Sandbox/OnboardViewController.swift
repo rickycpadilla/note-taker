@@ -25,36 +25,17 @@ class OnboardViewController: UIViewController {
     ]
     var subTitleArray: [String] = [
         "The place to take notes that is like no other place to take notes.",
-        "Press continue and then YES to use photos in this app.",
+        "Press continue and then OK to use photos in this app.",
         "What are you waiting for?"
     ]
     
-    var gradiant: CAGradientLayer = {
-        let blue = UIColor(red: 69/255, green: 127/255, blue: 202/255, alpha: 1.0).cgColor
-        let purple = UIColor(red: 166/255, green: 172/255, blue: 236/255, alpha: 1.0).cgColor
-        let gradiant = CAGradientLayer()
-        gradiant.colors = [purple, blue]
-        gradiant.startPoint = CGPoint(x: 0.5, y: 0.18)
-        return gradiant
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        gradient()
         UIApplication.shared.statusBarStyle = .lightContent
         swiftyOnboard = SwiftyOnboard(frame: view.frame, style: .light)
         view.addSubview(swiftyOnboard)
         swiftyOnboard.dataSource = self
         swiftyOnboard.delegate = self
-        
-        
-        
-    }
-    
-    func gradient() {
-        // Add gradiant to view
-        self.gradiant.frame = view.bounds
-        view.layer.addSublayer(gradiant)
     }
     
     func handleSkip() {
@@ -65,13 +46,11 @@ class OnboardViewController: UIViewController {
         let index = sender.tag
         if index == 1 {
             self.handlePhotoPermissions(index: index)
-            
         } else if index == 2 {
             performSegue(withIdentifier: "onboardSegue", sender: nil)
         } else {
             swiftyOnboard?.goToPage(index: index + 1, animated: true)
         }
-        
     }
     
     func handlePhotoPermissions(index: Int) {
@@ -84,6 +63,7 @@ class OnboardViewController: UIViewController {
     }
     
 }
+
 
 extension OnboardViewController: SwiftyOnboardDelegate, SwiftyOnboardDataSource {
     

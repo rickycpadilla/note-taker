@@ -31,8 +31,6 @@ class NoteTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -50,9 +48,7 @@ class NoteTableViewController: UITableViewController {
             fatalError("The dequeued cell is not an instance of NoteTableViewCell")
         }
         
-        // Fetches the appropriate meal for the data source layout.
         let note = notes[indexPath.row]
-        
         cell.titleLabel.text = note.title
         cell.noteLabel.text = note.note
         cell.photoImageView.image = note.photo
@@ -63,13 +59,13 @@ class NoteTableViewController: UITableViewController {
 
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
 
 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
         if editingStyle == .delete {
             
             // Remove from Realm
@@ -81,24 +77,22 @@ class NoteTableViewController: UITableViewController {
             // Delete the row from the data source
             notes.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-            
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
 
 
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    // In a storyboard-based application, do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        
         super.prepare(for: segue, sender: sender)
+        
         switch(segue.identifier ?? "") {
+            
             case "AddItem":
                 os_log("Adding a new note", log: OSLog.default, type: .debug)
+            
             case "ShowDetail":
+                // Get the new view controller using segue.destinationViewController.
                 guard let noteDetailViewController = segue.destination as? NoteViewController
                     else {
                         fatalError("Unexpected destination: \(segue.destination)")
@@ -109,9 +103,11 @@ class NoteTableViewController: UITableViewController {
                 guard let indexPath = tableView.indexPath(for: selectedNoteCell) else {
                     fatalError("The selected cell is not being displayed by the table")
                 }
-            
+                
+                // Pass the selected note to the new view controller.
                 let selectedNote = notes[indexPath.row]
                 noteDetailViewController.note = selectedNote
+            
             default: fatalError("Unexpected Segue Identifier; \(segue.identifier!)")
         }
     }
@@ -159,16 +155,18 @@ class NoteTableViewController: UITableViewController {
     private func loadStoredNotes() {
 
         let results = realm.objects(Note.self)
+        
         for result in results {
             
             let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
-            let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
-            let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
-            if let dirPath          = paths.first
+            let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+            let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+            
+            if let dirPath = paths.first
             {
                 let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent(result.photoUrl)
                 let image    = UIImage(contentsOfFile: imageURL.path)
-                // Do whatever you want with the image
+                
                 let note = Note()
                 note.id = result.id
                 note.title = result.title

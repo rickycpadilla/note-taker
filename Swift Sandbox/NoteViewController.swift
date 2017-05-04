@@ -12,15 +12,13 @@ import os.log
 class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var titleTextField: UITextField!
-    
     @IBOutlet weak var noteTextField: UITextField!
     @IBOutlet weak var photoImageView: UIImageView!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     
     var note: Note?
     var id: Int?
     var photoUrl: String?
-    
-    @IBOutlet weak var saveButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,10 +33,12 @@ class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
             titleTextField.text = note.title
             noteTextField.text = note.note
             photoImageView.image = note.photo
-            
             id = note.id
             photoUrl = note.photoUrl
+            
         } else {
+            
+            // Setup new note id
             id = Int(Date().timeIntervalSince1970 * 1000)
         }
         
@@ -65,7 +65,6 @@ class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // Hide the keyboard.
         textField.resignFirstResponder()
         if textField == titleTextField {
             noteTextField.becomeFirstResponder()
@@ -112,19 +111,18 @@ class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
                 fatalError("Expecetd a dictionary containing an image, but was provided the following: \(info)")
         }
         
-        // Store image in Documents
-        let documentsDirectoryURL = try! FileManager().url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-        
         // create a name for image
         let timestamp = Date().timeIntervalSince1970 * 1000
         var fileName = String(timestamp)
+        
         if let i = fileName.characters.index(of: ".") {
             fileName.remove(at: i)
             fileName += ".png"
         }
+        
+        // Store image in Documents
+        let documentsDirectoryURL = try! FileManager().url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
         let fileURL = documentsDirectoryURL.appendingPathComponent(fileName)
-        
-        
         if !FileManager.default.fileExists(atPath: fileURL.path) {
             do {
                 try UIImagePNGRepresentation(selectedImage)!.write(to: fileURL)
@@ -160,7 +158,6 @@ class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         let noteText = noteTextField.text ?? ""
         saveButton.isEnabled = !titleText.isEmpty || !noteText.isEmpty
     }
-
 
 }
 
