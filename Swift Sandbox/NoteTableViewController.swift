@@ -71,9 +71,17 @@ class NoteTableViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            
+            // Remove from Realm
+            let selectedNote = realm.objects(Note.self).filter("id == \(notes[indexPath[1]].id)").first
+            try! realm.write {
+                realm.delete(selectedNote!)
+            }
+            
             // Delete the row from the data source
             notes.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    

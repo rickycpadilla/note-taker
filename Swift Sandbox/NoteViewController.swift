@@ -101,7 +101,7 @@ class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        // Dismiss the pikcer if the user canceled.
+        // Dismiss the picker if the user canceled.
         dismiss(animated: true, completion: nil)
     }
     
