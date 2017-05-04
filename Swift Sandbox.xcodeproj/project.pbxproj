@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5578F5078FB681BCB7462D61 /* Pods_Swift_Sandbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9E82BFF181EF32ABD326346 /* Pods_Swift_Sandbox.framework */; };
+		DF8570C81EBB8E2C00F608BE /* OnboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF8570C71EBB8E2C00F608BE /* OnboardViewController.swift */; };
 		DFF3224E1EB7CE48008237E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF3224D1EB7CE48008237E4 /* AppDelegate.swift */; };
 		DFF322501EB7CE48008237E4 /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF3224F1EB7CE48008237E4 /* NoteViewController.swift */; };
 		DFF322531EB7CE48008237E4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DFF322511EB7CE48008237E4 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 		60AE39AEC6227654281062C3 /* Pods-Swift Sandbox.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swift Sandbox.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Swift Sandbox/Pods-Swift Sandbox.debug.xcconfig"; sourceTree = "<group>"; };
 		674193229D55C91DA1EBF5C8 /* Pods-Swift Sandbox.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swift Sandbox.release.xcconfig"; path = "Pods/Target Support Files/Pods-Swift Sandbox/Pods-Swift Sandbox.release.xcconfig"; sourceTree = "<group>"; };
 		D9E82BFF181EF32ABD326346 /* Pods_Swift_Sandbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swift_Sandbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF8570C71EBB8E2C00F608BE /* OnboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardViewController.swift; sourceTree = "<group>"; };
 		DFF3224A1EB7CE48008237E4 /* Swift Sandbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift Sandbox.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFF3224D1EB7CE48008237E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DFF3224F1EB7CE48008237E4 /* NoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 			children = (
 				DFF3224D1EB7CE48008237E4 /* AppDelegate.swift */,
 				DFF3224F1EB7CE48008237E4 /* NoteViewController.swift */,
+				DF8570C71EBB8E2C00F608BE /* OnboardViewController.swift */,
 				DFF79F711EB8FD880037E645 /* Note.swift */,
 				DFF322511EB7CE48008237E4 /* Main.storyboard */,
 				DFF79F751EB9084C0037E645 /* NoteTableViewController.swift */,
@@ -223,6 +226,7 @@
 			files = (
 				DFF79F761EB9084C0037E645 /* NoteTableViewController.swift in Sources */,
 				DFF322501EB7CE48008237E4 /* NoteViewController.swift in Sources */,
+				DF8570C81EBB8E2C00F608BE /* OnboardViewController.swift in Sources */,
 				DFF3224E1EB7CE48008237E4 /* AppDelegate.swift in Sources */,
 				DFF79F721EB8FD880037E645 /* Note.swift in Sources */,
 				DFF79F741EB902FF0037E645 /* NoteTableViewCell.swift in Sources */,

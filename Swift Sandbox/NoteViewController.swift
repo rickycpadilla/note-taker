@@ -38,6 +38,8 @@ class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
             
             id = note.id
             photoUrl = note.photoUrl
+        } else {
+            id = Int(Date().timeIntervalSince1970 * 1000)
         }
         
         updateSaveButtonState()
@@ -112,9 +114,9 @@ class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         
         // Store image in Documents
         let documentsDirectoryURL = try! FileManager().url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-        // create a name for your image
+        
+        // create a name for image
         let timestamp = Date().timeIntervalSince1970 * 1000
-        id = id ?? Int(timestamp)
         var fileName = String(timestamp)
         if let i = fileName.characters.index(of: ".") {
             fileName.remove(at: i)
@@ -133,7 +135,6 @@ class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         } else {
             print("Image Not Added")
         }
-        
         
         // Set photoImageView to display the selected image.
         photoImageView.image = selectedImage
