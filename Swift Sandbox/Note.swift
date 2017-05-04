@@ -7,26 +7,31 @@
 //
 
 import UIKit
+import RealmSwift
 
-class Note {
+class Note: Object {
     
-    var id: Int
-    var title: String
-    var note: String
+    dynamic var id: Int = 0
+    dynamic var title: String = ""
+    dynamic var note: String = ""
     var photo: UIImage?
-    var photoUrl: String
+    dynamic var photoUrl: String = ""
     
-    init?(id: Int, title: String, note: String, photo: UIImage?, photoUrl: String) {
-        // Initialization should fail if there is no title or no note body
-        if title.isEmpty || note.isEmpty {
-            return nil
-        }
-        // Initialize stored properties
-        self.id = id
-        self.title = title
-        self.note = note
-        self.photo = photo
-        self.photoUrl = photoUrl
+//    init?(id: Int, title: String, note: String, photo: UIImage?, photoUrl: String) {
+//        // Initialization should fail if there is no title or no note body
+//        if title.isEmpty || note.isEmpty {
+//            return nil
+//        }
+//        // Initialize stored properties
+//        self.id = id
+//        self.title = title
+//        self.note = note
+//        self.photo = photo
+//        self.photoUrl = photoUrl
+//    }
+    
+    override static func ignoredProperties() -> [String] {
+        return ["photo"]
     }
     
 }

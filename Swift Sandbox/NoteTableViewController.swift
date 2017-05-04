@@ -10,23 +10,12 @@ import UIKit
 import os.log
 import RealmSwift
 
-class RealmNote: Object {
-    dynamic var id = 0
-    dynamic var title = ""
-    dynamic var note = ""
-    dynamic var photoUrl = ""
-    
-}
-
 class NoteTableViewController: UITableViewController {
-    
-    
     
     let realm = try! Realm()
     
     // This code declares a property and initializes it with a default value (an empty array of Note objects)
     var notes = [Note]()
-    
 
     override func viewDidLoad() {
         // Use the edit button item provided by the table view controller.
@@ -90,20 +79,6 @@ class NoteTableViewController: UITableViewController {
         }    
     }
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     // MARK: - Navigation
 
@@ -143,7 +118,7 @@ class NoteTableViewController: UITableViewController {
                 tableView.reloadRows(at: [selectedIndexPath], with: .none)
                 
                 // Update note in Realm
-                let selectedNote = realm.objects(RealmNote.self).filter("id == \(note.id)").first
+                let selectedNote = realm.objects(Note.self).filter("id == \(note.id)").first
                 try! realm.write {
                     selectedNote!.title = note.title
                     selectedNote!.note = note.note
@@ -159,7 +134,7 @@ class NoteTableViewController: UITableViewController {
                 print("Adding a note", note.id)
                 
                 // Insert into Realm here
-                let myNote = RealmNote()
+                let myNote = Note()
                 myNote.id = note.id
                 myNote.title = note.title
                 myNote.note = note.note
@@ -175,7 +150,7 @@ class NoteTableViewController: UITableViewController {
     
     private func loadStoredNotes() {
 
-        let results = realm.objects(RealmNote.self)
+        let results = realm.objects(Note.self)
         for result in results {
             
             let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
@@ -186,15 +161,12 @@ class NoteTableViewController: UITableViewController {
                 let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent(result.photoUrl)
                 let image    = UIImage(contentsOfFile: imageURL.path)
                 // Do whatever you want with the image
-                guard let note = Note(
-                    id: result.id,
-                    title: result.title,
-                    note: result.note,
-                    photo: image,
-                    photoUrl: result.photoUrl
-                    ) else {
-                        fatalError("Can't create note from Realm")
-                }
+                let note = Note()
+                note.id = result.id
+                note.title = result.title
+                note.note = result.note
+                note.photo = image
+                note.photoUrl = result.photoUrl
                 print("note id", result.id)
                 notes += [note]
             }

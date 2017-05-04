@@ -54,7 +54,12 @@ class NoteViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         let photo = photoImageView.image
         
         // Set the note to be passed to NoteTableViewController after the unwind segue
-        note = Note(id: id!, title: title, note: noteText, photo: photo, photoUrl: photoUrl!)
+        note = Note()
+        note!.id = id!
+        note!.title = title
+        note!.note = noteText
+        note!.photo = photo
+        note!.photoUrl = photoUrl!
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
